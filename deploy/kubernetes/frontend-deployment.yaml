@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-engine-web
+  namespace: cache-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache-engine-web
+  template:
+    metadata:
+      labels:
+        app: cache-engine-web
+    spec:
+      containers:
+        - name: web
+          image: ghcr.io/your-org/cache-engine-web:latest
+          imagePullPolicy: IfNotPresent
+          env:
+            - name: CACHE_ENGINE_UPSTREAM_HOST
+              value: cache-engine-api.cache-engine.svc.cluster.local
+            - name: CACHE_ENGINE_UPSTREAM_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: cache-engine-secrets
+                  key: CACHE_ENGINE_API_KEY
+          ports:
+            - containerPort: 80
+              name: http
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
