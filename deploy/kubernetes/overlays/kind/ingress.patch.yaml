@@ -1,0 +1,8 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: cache-engine
+  namespace: cache-engine
+spec:
+  rules:
+    - host: cache-engine.localtest.me
