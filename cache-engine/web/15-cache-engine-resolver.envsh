@@ -1,0 +1,12 @@
+#!/bin/sh
+set -eu
+
+if [ -z "${CACHE_ENGINE_DNS_RESOLVER:-}" ]; then
+  CACHE_ENGINE_DNS_RESOLVER="$(awk '/^nameserver[[:space:]]+/ { print $2 }' /etc/resolv.conf | paste -sd ' ' -)"
+fi
+
+if [ -z "${CACHE_ENGINE_DNS_RESOLVER}" ]; then
+  CACHE_ENGINE_DNS_RESOLVER="127.0.0.11"
+fi
+
+export CACHE_ENGINE_DNS_RESOLVER
