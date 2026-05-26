@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cache-engine-api
+  namespace: cache-engine
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cache-engine-api
+  template:
+    metadata:
+      labels:
+        app: cache-engine-api
+    spec:
+      securityContext:
+        fsGroup: 65532
+      containers:
+        - name: api
+          image: ghcr.io/your-org/cache-engine-api:latest
+          imagePullPolicy: IfNotPresent
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 65532
+          ports:
+            - containerPort: 8080
+              name: http
+          envFrom:
+            - configMapRef:
+                name: cache-engine-config
+            - secretRef:
+                name: cache-engine-secrets
+          volumeMounts:
+            - name: state
+              mountPath: /app/data
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 20
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 512Mi
+      volumes:
+        - name: state
+          persistentVolumeClaim:
+            claimName: cache-engine-state

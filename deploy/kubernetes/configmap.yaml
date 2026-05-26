@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cache-engine-config
+  namespace: cache-engine
+data:
+  CACHE_ENGINE_ENV: production
+  CACHE_ENGINE_ADDR: ":8080"
+  CACHE_ENGINE_ALLOWED_ORIGINS: https://cache.example.com
+  CACHE_ENGINE_STATE_DB_PATH: /app/data/cache-engine.db
+  CACHE_ENGINE_BACKING_STORE_DRIVER: sqlite
+  CACHE_ENGINE_RATE_LIMIT_REQUESTS: "120"
+  CACHE_ENGINE_RATE_LIMIT_WINDOW_MS: "60000"
+  CACHE_ENGINE_SSE_TOKEN_TTL_MS: "120000"
+  CACHE_ENGINE_SHUTDOWN_TIMEOUT_MS: "15000"
+  CACHE_ENGINE_LOG_FORMAT: json
+  CACHE_ENGINE_LOG_LEVEL: info
+  CACHE_ENGINE_SEED_DEMO_DATA: "false"

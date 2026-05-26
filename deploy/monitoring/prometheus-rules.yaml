@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: cache-engine-alerts
+  namespace: monitoring
+spec:
+  groups:
+    - name: cache-engine
+      rules:
+        - alert: CacheEngineNotReady
+          expr: cache_engine_ready == 0
+          for: 2m
+          labels:
+            severity: critical
+          annotations:
+            summary: Cache Engine is not ready
+            description: The Cache Engine readiness endpoint has reported not-ready for more than 2 minutes.
+        - alert: CacheEngineHighAuthFailures
+          expr: increase(cache_engine_auth_rejections_total[5m]) > 20
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: Cache Engine auth failures are spiking
+            description: More than 20 requests were rejected by authentication in the last 5 minutes.
+        - alert: CacheEngineHighRateLimiting
+          expr: increase(cache_engine_rate_limit_rejections_total[5m]) > 50
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: Cache Engine rate limiting is elevated
+            description: More than 50 requests were rate-limited in the last 5 minutes.
+        - alert: CacheEngineMemoryHigh
+          expr: cache_engine_process_memory_bytes > 400000000
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: Cache Engine memory usage is high
+            description: Process memory has exceeded 400MB for more than 10 minutes.
