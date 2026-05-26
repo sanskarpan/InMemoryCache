@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: cache-engine
+  namespace: monitoring
+spec:
+  selector:
+    matchLabels:
+      app: cache-engine-api
+  namespaceSelector:
+    matchNames:
+      - cache-engine
+  endpoints:
+    - port: http
+      path: /metrics
+      interval: 30s
+      bearerTokenSecret:
+        name: cache-engine-monitoring-auth
+        key: CACHE_ENGINE_API_KEY
