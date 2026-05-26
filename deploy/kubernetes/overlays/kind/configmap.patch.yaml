@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cache-engine-config
+  namespace: cache-engine
+data:
+  CACHE_ENGINE_ALLOWED_ORIGINS: http://127.0.0.1:8081,http://localhost:8081
