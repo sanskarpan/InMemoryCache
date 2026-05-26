@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: cache-engine-api
+  namespace: cache-engine
+  labels:
+    app: cache-engine-api
+spec:
+  selector:
+    app: cache-engine-api
+  ports:
+    - name: http
+      port: 8080
+      targetPort: http
