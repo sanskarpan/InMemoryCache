@@ -1,0 +1,11 @@
+bin
+data
+backups
+web/node_modules
+web/dist
+*.db
+*.sqlite3
+*.log
+.env
+.env.*
+README.md
