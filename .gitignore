@@ -1,0 +1,25 @@
+# Go build artifacts
+cache-engine/bin/
+cache-engine/coverage.out
+
+# Runtime state
+cache-engine/data/
+cache-engine/backups/
+cache-engine/*.db
+cache-engine/*.sqlite3
+infra/terraform/.terraform/
+infra/terraform/terraform.tfstate
+infra/terraform/terraform.tfstate.backup
+
+# Frontend artifacts
+cache-engine/web/node_modules/
+cache-engine/web/dist/
+cache-engine/web/dist-ssr/
+
+# Local env and editor files
+.env
+.env.*
+!.env.example
+.DS_Store
+.idea/
+.vscode/
