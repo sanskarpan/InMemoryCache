@@ -142,6 +142,8 @@ Because the process uses SQLite in WAL mode, back up the database through the ad
 - Monitoring bundle: [deploy/monitoring](/Users/sanskar/dev/Research/Projects/InMemoryCache/deploy/monitoring)
 - Prometheus alert rules: [deploy/monitoring/prometheus-rules.yaml](/Users/sanskar/dev/Research/Projects/InMemoryCache/deploy/monitoring/prometheus-rules.yaml:1)
 - Prometheus scrape config: [deploy/monitoring/service-monitor.yaml](/Users/sanskar/dev/Research/Projects/InMemoryCache/deploy/monitoring/service-monitor.yaml:1)
+- Grafana dashboard: [deploy/monitoring/cache-engine-dashboard.json](/Users/sanskar/dev/Research/Projects/InMemoryCache/deploy/monitoring/cache-engine-dashboard.json:1)
+- Alert routing example: [deploy/monitoring/alertmanager-config.example.yaml](/Users/sanskar/dev/Research/Projects/InMemoryCache/deploy/monitoring/alertmanager-config.example.yaml:1)
 - Terraform deployment baseline: [infra/terraform](/Users/sanskar/dev/Research/Projects/InMemoryCache/infra/terraform)
 - CI: [.github/workflows/ci.yml](/Users/sanskar/dev/Research/Projects/InMemoryCache/.github/workflows/ci.yml:1)
 
@@ -151,6 +153,7 @@ Because the process uses SQLite in WAL mode, back up the database through the ad
 make build
 make test
 make bench
+make loadtest
 make run
 make lint
 make dev
@@ -166,6 +169,35 @@ The frontend is route-split and uses local SVG chart components instead of a hea
 - Playground
 - Visualizer
 - Benchmarks
+
+## Load testing
+
+Use the dedicated load-test runner to validate the API, SSE, and benchmark endpoints under sustained traffic:
+
+```bash
+export CACHE_ENGINE_API_KEY=...
+make loadtest
+```
+
+Useful flags:
+
+- `--base-url http://127.0.0.1:8080`
+- `--mode api|sse|benchmark|all`
+- `--duration 1m`
+- `--concurrency 32`
+- `--api-pause 5ms`
+- `--sse-clients 8`
+- `--benchmark-runs 5`
+
+The load test uses `X-Forwarded-For` fan-out so the rate limiter is exercised with realistic request volume instead of tripping on a single client IP.
+
+## Backup and restore
+
+For SQLite backup and restore procedures, use the dedicated runbook at [docs/runbooks/sqlite-backup-restore.md](/Users/sanskar/dev/Research/Projects/InMemoryCache/docs/runbooks/sqlite-backup-restore.md:1).
+
+## Security
+
+Security reporting instructions live in [SECURITY.md](/Users/sanskar/dev/Research/Projects/InMemoryCache/SECURITY.md:1).
 
 ## Validation
 

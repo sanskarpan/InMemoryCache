@@ -11,6 +11,7 @@ Before applying the base manifests:
 - replace the placeholder API key in `secret.example.yaml`
 - set the real ingress host in `ingress.yaml`
 - point `CACHE_ENGINE_ALLOWED_ORIGINS` in `configmap.yaml` at the deployed frontend origin
+- replace the example `latest` image references with digest-pinned release images for production use
 
 ## Local kind validation
 

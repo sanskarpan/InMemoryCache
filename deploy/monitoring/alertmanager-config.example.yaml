@@ -1,0 +1,41 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: cache-engine-routing
+  namespace: monitoring
+spec:
+  route:
+    groupBy:
+      - alertname
+      - namespace
+      - severity
+    groupWait: 30s
+    groupInterval: 5m
+    repeatInterval: 4h
+    receiver: cache-engine-default
+    routes:
+      - matchers:
+          - severity = "critical"
+        receiver: cache-engine-critical
+      - matchers:
+          - severity = "warning"
+        receiver: cache-engine-warning
+  receivers:
+    - name: cache-engine-default
+      webhookConfigs:
+        - urlSecret:
+            name: cache-engine-alertmanager-webhook
+            key: URL
+          sendResolved: true
+    - name: cache-engine-critical
+      webhookConfigs:
+        - urlSecret:
+            name: cache-engine-alertmanager-critical-webhook
+            key: URL
+          sendResolved: true
+    - name: cache-engine-warning
+      webhookConfigs:
+        - urlSecret:
+            name: cache-engine-alertmanager-warning-webhook
+            key: URL
+          sendResolved: true

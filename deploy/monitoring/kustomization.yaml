@@ -3,6 +3,16 @@ kind: Kustomization
 
 namespace: monitoring
 
+generatorOptions:
+  disableNameSuffixHash: true
+  labels:
+    grafana_dashboard: "1"
+
+configMapGenerator:
+  - name: cache-engine-dashboard
+    files:
+      - cache-engine-dashboard.json
+
 resources:
   - secret.example.yaml
   - service-monitor.yaml

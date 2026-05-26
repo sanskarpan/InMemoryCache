@@ -1,4 +1,4 @@
-.PHONY: build test bench run lint dev backup migrate
+.PHONY: build test bench run lint dev backup migrate loadtest
 
 build:
 	go build -o bin/server ./cmd/server
@@ -25,3 +25,6 @@ backup:
 
 migrate:
 	go run ./cmd/admin migrate --db $${DB_PATH:-data/cache-engine.db}
+
+loadtest:
+	go run ./cmd/loadtest $${LOADTEST_ARGS}

@@ -20,6 +20,8 @@ terraform apply \
   -var='api_key=replace-me'
 ```
 
+For production deployments, set `api_image` and `web_image` to digest-pinned release references instead of mutable tags.
+
 The Terraform module and the raw manifests under `deploy/kubernetes/` intentionally model the same deployment shape. Use the raw manifests when you need direct YAML control, and Terraform when you want environment provisioning and drift management.
 
 The Prometheus `ServiceMonitor`, scrape-auth secret example, and alert rules are kept as raw manifests under `deploy/monitoring/` because they depend on the Prometheus Operator CRDs being installed in the target cluster.
